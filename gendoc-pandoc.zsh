@@ -49,32 +49,32 @@ set_toc() {
 set_tex() {
   pandoc_opts+=("-s" "-f" "markdown" "-V" "geometry=$tex_geo" "-V" "documentclass=$tex_docclass" "--pdf-engine=lualatex")
 
-  if [[ -n "${tex_font:-${tex_mainfont:-${tex_mainjfont}}}" ]
+  if [[ -n "${tex_font:-${tex_mainfont:-${tex_mainjfont}}}" ]]
   then
     pandoc_opts+=("-V" "CJKmainfont=${tex_font:-${tex_mainfont:-${tex_mainjfont}}}")
   fi
 
-  if [[ -n "${tex_sansfont:-${tex_sansjfont}}" ]
+  if [[ -n "${tex_sansfont:-${tex_sansjfont}}" ]]
   then
     pandoc_opts+=("-V" "CJKsansfont=${tex_sansfont:-${tex_sansjfont}}")
   fi
   
-  if [[ -n "${tex_monofont:-${tex_monojfont}}" ]
+  if [[ -n "${tex_monofont:-${tex_monojfont}}" ]]
   then
     pandoc_opts+=("-V" "CJKmonofont=${tex_monofont:-${tex_monojfont}}")
   fi
 
-  if [[ -n "${tex_font_en:-${tex_mainfont_en}}" ]
+  if [[ -n "${tex_font_en:-${tex_mainfont_en}}" ]]
   then
     pandoc_opts+=("-V" "mainfont=${tex_font_en:-${tex_mainfont_en}}")
   fi
 
-  if [[ -n "${tex_sansfont_en}" ]
+  if [[ -n "${tex_sansfont_en}" ]]
   then
     pandoc_opts+=("-V" "sansfont=${tex_sansfont_en}")
   fi
 
-  if [[ -n "${tex_monofont_en}" ]
+  if [[ -n "${tex_monofont_en}" ]]
   then
     pandoc_opts+=("-V" "sansfont=${tex_monofont_en}")
   fi
