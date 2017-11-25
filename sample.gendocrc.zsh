@@ -1,0 +1,11 @@
+toc=no
+toc_in[tex]=yes
+toc_in[texpdf]=yes
+tex_font="Source Han Serif JP"
+tex_sansfont="Source Han Sans JP"
+tex_monofont="Source Han Code JP"
+tex_font="Droid Serif"
+tex_monofont_en="Courier"
+crossres=yes
+reveal_theme="night"
+html_css="$HOME/lib/markdowncss/markdown.css"
