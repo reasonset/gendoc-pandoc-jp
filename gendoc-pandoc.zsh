@@ -4,7 +4,7 @@
 typeset -g standalone=yes
 typeset -g embed_relay=yes
 typeset -g toc=yes
-typeset -gA toc_in=()
+typeset -gA toc_in
 typeset -g tex_geo="a4paper"
 typeset -g tex_margin="1in"
 typeset -g tex_docclass="ltjsarticle"
@@ -17,6 +17,8 @@ unset tex_font_en
 unset tex_mainfont_en
 unset tex_sansfont_en
 unset tex_monofont_en
+typeset -g listings=no
+typeset -ga tex_headers
 unset dest_dir
 typeset -g crossref=no
 typeset -g reveal_theme="white"
@@ -81,6 +83,8 @@ set_tex() {
 
 
   set_toc
+  add_texheaders
+  use_listings
   use_crossref
   set_files "$filename" $1
 }
@@ -105,6 +109,23 @@ use_crossref() {
   if [[ $crossref == yes ]]
   then
     pandoc_opts+=("--filter" "pandoc-crossref")
+  fi
+}
+
+use_listings() {
+  if [[ $listings == yes ]]
+  then
+    pandoc_opts+=(--listings)
+  fi
+}
+
+add_texheaders() {
+  if (( ${#tex_headers} > 0 ))
+  then
+    for i in "${(@)tex_headers}"
+    do
+      pandoc_opts+=(-H "$i")
+    done
   fi
 }
 
@@ -162,3 +183,6 @@ case "$mode" in
 esac
 
 pandoc "${(@)pandoc_opts}"
+
+
+
