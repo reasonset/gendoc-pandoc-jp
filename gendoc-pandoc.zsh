@@ -49,7 +49,7 @@ set_toc() {
 }
 
 set_tex() {
-  pandoc_opts+=("-s" "-f" "markdown" "-V" "geometry=$tex_geo" "-V" "documentclass=$tex_docclass" "--pdf-engine=lualatex")
+  pandoc_opts+=("-s" "-f" "markdown" "-V" "geometry=$tex_geo" -V "geometry:margin=$tex_margin" "-V" "documentclass=$tex_docclass" "--pdf-engine=lualatex")
 
   if [[ -n "${tex_font:-${tex_mainfont:-${tex_mainjfont}}}" ]]
   then
