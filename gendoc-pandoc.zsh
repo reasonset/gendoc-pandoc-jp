@@ -5,6 +5,8 @@ typeset -g standalone=yes
 typeset -g embed_relay=yes
 typeset -g toc=yes
 typeset -gA toc_in
+unset wrap
+unset column
 typeset -g tex_geo="a4paper"
 typeset -g tex_margin="1in"
 typeset -g tex_docclass="ltjsarticle"
@@ -48,6 +50,22 @@ set_toc() {
   fi
 }
 
+set_wrap() {
+  if [[ -n $wrap ]]
+  then
+    pandoc_opts+=("--wrap" "$wrap")
+  fi  
+}
+
+
+set_column() {
+  if [[ -n $column || -n $GENDOC_COLUMN ]]
+  then
+    pandoc_opts+=("--column" "${GENDOC_COLUMN:-${column}}")
+  fi  
+}
+
+
 set_tex() {
   pandoc_opts+=("-s" "-f" "markdown" "-V" "geometry=$tex_geo" -V "geometry:margin=$tex_margin" "-V" "documentclass=$tex_docclass" "--pdf-engine=lualatex")
 
@@ -78,11 +96,13 @@ set_tex() {
 
   if [[ -n "${tex_monofont_en}" ]]
   then
-    pandoc_opts+=("-V" "sansfont=${tex_monofont_en}")
+    pandoc_opts+=("-V" "monofont=${tex_monofont_en}")
   fi
 
 
   set_toc
+  set_wrap
+  set_column
   add_texheaders
   use_listings
   use_crossref
