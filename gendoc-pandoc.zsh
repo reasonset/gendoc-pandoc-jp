@@ -44,7 +44,7 @@ set_selfcontained() {
 }
 
 set_toc() {
-  if [[ $toc == yes || $toc_in[$1] == yes ]]
+  if [[ $GENDOC_TOC != no && ( $GENDOC_TOC == yes || $toc == yes || $toc_in[$1] == yes ) ]]
   then
     pandoc_opts+=("--toc")
   fi
@@ -133,7 +133,7 @@ use_crossref() {
 }
 
 use_listings() {
-  if [[ $listings == yes ]]
+  if [[ $GENDOC_LISTINGS != no && ( $GENDOC_LISTINGS == yes || $listings == yes ) ]]
   then
     pandoc_opts+=(--listings)
   fi
@@ -150,7 +150,13 @@ add_texheaders() {
 }
 
 set_files() {
-  if [[ -n $dest_dir ]]
+  if [[ -n $outfile && -d $outfile ]]
+  then
+    pandoc_opts+=("-o" "$outfile/${${1:t}:r}.$2" "$1")
+  elif [[ -n $outfile ]]
+  then
+    pandoc_opts+=("-o" "$outfile" "$1")
+  elif [[ -n $dest_dir ]]
   then
     pandoc_opts+=("-o" "$dest_dir/${${1:t}:r}.$2" "$1")
   else
@@ -160,14 +166,14 @@ set_files() {
 
 #### SET CONFIG ####
 
-if [[ -f $HOME/.config/yek/gendoc-pandocrc.zsh ]]
+if [[ $GENDOC_NORC != yes && -f $HOME/.config/yek/gendoc-pandocrc.zsh ]]
 then
   . $HOME/.config/yek/gendoc-pandocrc.zsh
 fi
 
-if [[ -f ./.gendocrc.zsh ]]
+if [[ -f ${GENDOC_ALTRC:-./.gendocrc.zsh} ]]
 then
-  . ./.gendocrc.zsh
+  . ${GENDOC_ALTRC:-./.gendocrc.zsh}
 fi
 
 #### PREPARE ####
@@ -178,6 +184,7 @@ typeset -ag pandoc_opts=()
 
 typeset -g mode="$1"
 typeset -g filename="$2"
+typeset -g outfile="$3"
 
 case "$mode" in
   htmlsimple)
@@ -187,7 +194,7 @@ case "$mode" in
   html)
     set_html
     ;;
-  slide)
+  slide|reveal)
     set_reveal
     ;;
   texpdf)

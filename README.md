@@ -27,10 +27,14 @@ gendoc-pandoc.zshは`~/.config/yek/gendoc-pandoc.zsh`があればそれを読み
 
 設定ファイルは環境や用途に合わせた調整であり、*configサンプルを使用するよりもデフォルトのほうが確実に動きます。*
 
+環境変数`$GENDOC_NORC`を`yes`としていると、共通の設定ファイルを読み込みません。
+
+また、環境変数`$GENDOC_ALTRC`を設定している場合、カレントディレクトリの設定ファイルの代わりに読み込まれます。
+
 ### Command
 
 ```bash
-gendoc-pandoc.zsh <format> <file>
+gendoc-pandoc.zsh <format> <file> [output]
 ```
 
 formatとして次のものが指定できます。
@@ -41,8 +45,10 @@ formatとして次のものが指定できます。
 |`htmlsimple`|CSSを使わずstandaloneなHTMLファイルを出力します。設定ファイルの内容は無視されます。|
 |`tex`|TeXで出力します。|
 |`texpdf`|TeX経由でPDF出力します。`--pdf-engine`として`lualatex`を使用します。|
-|`reveal`|reveal.jsスライドとして出力します。カレントディレクトリにreveal.jsフォルダがある必要があります。|
+|`slide`|reveal.jsスライドとして出力します。カレントディレクトリにreveal.jsフォルダがある必要があります。|
 
+outputを指定した場合、それがディレクトリであればそのディレクトリに出力します。
+そうでない場合、そのファイルに出力します。
 
 ## Configuration
 
@@ -52,7 +58,7 @@ formatとして次のものが指定できます。
 |--------|---------|-----------------------|
 |`standalone`|yes|HTMLファイルで完全なHTMLを生成します。`-s`に変換されますが、TeXを使う場合はこのオプションによらず設定されます。|
 |`embed_relay`|yes|HTMLを使う場合に`--self-contained`に変換されます。CSSや画像などをdataスキームでHTMLファイルに埋め込みます。|
-|`toc`|yes|目次を生成します。`--toc`に変換されます。|
+|`toc`|yes|目次を生成します。`--toc`に変換されます。環境変数`$GENDOC_TOC`を`no`にすると、`--toc`は常に無効になります。|
 |`toc_in`||連想配列です。`toc`が`no`の場合に、ここで値にyesを指定されたキーのフォーマットでのみ`--toc`が適用されます。`toc_in[texpdf]=yes`のように使用します。フォーマットはコマンドの第一引数と同じです。|
 |`wrap`||`--wrap`オプションを指定します。値をオプションの値として使用します。|
 |`column`||`--column`オプションを指定します。`texpdf`でテーブルが右に突き抜けてしまう場合に有効です。環境変数`$GENDOC_COLUMN`を指定した場合でも適用されます。値をオプションの値として使用します。|
@@ -64,9 +70,9 @@ formatとして次のものが指定できます。
 |`tex_monofont`||和文フォント(等幅)を指定します。`tex_monojfont`も許容します。|
 |`tex_font_en`||欧文フォント(通常)を指定します。`tex_mainfont_en`も許容します。|
 |`tex_sansfont_en`||欧文フォント(サンセリフ)を指定します。|
-|`tex_monofont_en`||欧文フォント(モノスペース)を指定します。|
-|`dest_dir`||出力ディレクトリを指定します。指定しない場合、ソースと同じディレクトリに出力します。|
-|`listings`|no|TeXにおいてlistingsパッケージを使用します。ブロックコードの整形と機能が改善します。ただし、適切に機能するには設定が必要で、`tex_headers`で指定する必要があるでしょう。またはYAMLヘッダーの`header-includes`で指定してください。`listings-templates`ディレクトリにはいくつかのサンプルとなるヘッダファイルが含まれています。|
+|`tex_monofont_en`||欧文フォント(モノスペース)を指定します。これを指定することで、コード中のダブルクオートや連続するハイフンが意図しない表示になる場合があります。|
+|`dest_dir`||出力ディレクトリを指定します。指定しない場合、ソースと同じディレクトリに出力します。outputを指定した場合、上書きされます。|
+|`listings`|no|TeXにおいてlistingsパッケージを使用します。ブロックコードの整形と機能が改善します。ただし、適切に機能するには設定が必要で、`tex_headers`で指定する必要があるでしょう。またはYAMLヘッダーの`header-includes`で指定してください。`listings-templates`ディレクトリにはいくつかのサンプルとなるヘッダファイルが含まれています。環境変数`$GENDOC_LISTINGS`も利用可能です。また、`$GENDOC_LISTINGS`が`no`の場合、`listings`の設定を上書きします。|
 |`crossref`|no|pandoc-crossrefを使用します。|
 |`tex_headers`||TeXの追加ヘッダファイルを指定する配列です。`tex_headers+=(path/to/file.tex)`のように指定してください。配列への追加であれば複数回指定することができます。|
 |`reveal_theme`|`white`|reveal.jsのテーマを指定します。|
