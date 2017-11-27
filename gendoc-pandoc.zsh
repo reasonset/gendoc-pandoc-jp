@@ -22,6 +22,7 @@ unset tex_monofont_en
 typeset -g listings=no
 typeset -ga tex_headers
 unset dest_dir
+typeset -gA dest_in
 typeset -g crossref=no
 typeset -g reveal_theme="white"
 typeset -gi reveal_slidelevel=2
@@ -156,6 +157,9 @@ set_files() {
   elif [[ -n $outfile ]]
   then
     pandoc_opts+=("-o" "$outfile" "$1")
+  elif [[ -n $dest_in[$mode] ]]
+  then
+    pandoc_opts+=("-o" "${dest_in[$mode]}/${${1:t}:r}.$2" "$1")
   elif [[ -n $dest_dir ]]
   then
     pandoc_opts+=("-o" "$dest_dir/${${1:t}:r}.$2" "$1")
