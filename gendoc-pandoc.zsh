@@ -101,12 +101,6 @@ set_tex() {
     pandoc_opts+=("-V" "monofont=${tex_monofont_en}")
   fi
   
-  #Temporary Fix for ltjsclass with LuaTeX-ja 20180616.0.
-  #And keep to support select math font
-  if [[ -z $tex_mathfont ]]
-  then
-    tex_mathfont="DejaVu Math TeX Gyre" # Will be deleted for future fix.
-  fi
   if [[ -n "${tex_mathfont}" ]]
   then
     pandoc_opts+=("-V" "mathfont=$tex_mathfont")
