@@ -17,8 +17,8 @@ gendoc-pandoc.zshを実行可能なディレクトリにコピーしてくださ
 
 ### Files
 
-gendoc-pandoc.zshは`~/.config/yek/gendoc-pandoc.zsh`があればそれを読み、
-次に`./.gendoc-pandoc.zsh`を読み込みます。
+gendoc-pandoc.zshは`~/.config/yek/gendoc-pandocrc.zsh`があればそれを読み、
+次に`./.gendocrc.zsh`を読み込みます。
 
 これらのファイルによって変数を定義することができます。
 
@@ -71,6 +71,7 @@ outputを指定した場合、それがディレクトリであればそのデ�
 |`tex_font_en`||欧文フォント(通常)を指定します。`tex_mainfont_en`も許容します。|
 |`tex_sansfont_en`||欧文フォント(サンセリフ)を指定します。|
 |`tex_monofont_en`||欧文フォント(モノスペース)を指定します。これを指定することで、コード中のダブルクオートや連続するハイフンが意図しない表示になる場合があります。|
+|`tex_mathfont`||数学用フォントを指定します。現在ワークアラウンドのため自動的に指定されます(上書きは可能)|
 |`dest_dir`||出力ディレクトリを指定します。指定しない場合、ソースと同じディレクトリに出力します。outputを指定した場合、上書きされます。|
 |`dest_in`||出力フォーマットごとの出力ディレクトリを指定します。連想配列で、キーにフォーマット名を、値に出力ディレクトリを指定します。この指定は`dest_dir`に優先します。|
 |`listings`|no|TeXにおいてlistingsパッケージを使用します。ブロックコードの整形と機能が改善します。ただし、適切に機能するには設定が必要で、`tex_headers`で指定する必要があるでしょう。またはYAMLヘッダーの`header-includes`で指定してください。`listings-templates`ディレクトリにはいくつかのサンプルとなるヘッダファイルが含まれています。環境変数`$GENDOC_LISTINGS`も利用可能です。また、`$GENDOC_LISTINGS`が`no`の場合、`listings`の設定を上書きします。|

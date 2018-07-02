@@ -1,15 +1,15 @@
 #!/usr/bin/zsh
 
 # Default options.
-typeset -g standalone=yes
-typeset -g embed_relay=yes
-typeset -g toc=yes
-typeset -gA toc_in
+typeset -g   standalone=yes
+typeset -g   embed_relay=yes
+typeset -g   toc=yes
+typeset -gA  toc_in
 unset wrap
 unset column
-typeset -g tex_geo="a4paper"
-typeset -g tex_margin="1in"
-typeset -g tex_docclass="ltjsarticle"
+typeset -g   tex_geo="a4paper"
+typeset -g   tex_margin="1in"
+typeset -g   tex_docclass="ltjsarticle"
 unset tex_font
 unset tex_mainfont
 unset tex_mainjfont
@@ -19,14 +19,15 @@ unset tex_font_en
 unset tex_mainfont_en
 unset tex_sansfont_en
 unset tex_monofont_en
-typeset -g listings=no
-typeset -ga tex_headers
+unset tex_mathfont
+typeset -g   listings=no
+typeset -ga  tex_headers
 unset dest_dir
-typeset -gA dest_in
-typeset -g crossref=no
-typeset -g reveal_theme="white"
-typeset -gi reveal_slidelevel=2
-typeset -g html_css="./markdown.css"
+typeset -gA  dest_in
+typeset -g   crossref=no
+typeset -g   reveal_theme="white"
+typeset -gi  reveal_slidelevel=2
+typeset -g   html_css="./markdown.css"
 
 #### SET OPTIONS ####
 
@@ -99,7 +100,17 @@ set_tex() {
   then
     pandoc_opts+=("-V" "monofont=${tex_monofont_en}")
   fi
-
+  
+  #Temporary Fix for ltjsclass with LuaTeX-ja 20180616.0.
+  #And keep to support select math font
+  if [[ -z $tex_mathfont ]]
+  then
+    tex_mathfont="DejaVu Math TeX Gyre" # Will be deleted for future fix.
+  fi
+  if [[ -n "${tex_mathfont}" ]]
+  then
+    pandoc_opts+=("-V" "mathfont=$tex_mathfont")
+  fi
 
   set_toc
   set_wrap
