@@ -88,3 +88,9 @@ outputを指定した場合、それがディレクトリであればそのデ�
 - texlive (`tex`及び`texpdf`のため)
 - texlive-langjapanese (`tex`及び`texpdf`で日本語を扱うため)
 - pandoc-crossref (crossrefを使う場合)
+
+# Archived
+
+このプロジェクトはもう更新しておらず、アーカイブした。
+
+現行のPandocに対応していないが、いくらか参考になる要素は残っているかもしれない。

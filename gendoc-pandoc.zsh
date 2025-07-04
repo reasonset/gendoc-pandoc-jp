@@ -21,6 +21,7 @@ unset tex_sansfont_en
 unset tex_monofont_en
 unset tex_mathfont
 typeset -g   listings=no
+typeset -ga  tex_vars
 typeset -ga  tex_headers
 unset dest_dir
 typeset -gA  dest_in
@@ -110,6 +111,7 @@ set_tex() {
   set_wrap
   set_column
   add_texheaders
+  add_texvariables
   use_listings
   use_crossref
   set_files "$filename" $1
@@ -151,6 +153,16 @@ add_texheaders() {
     for i in "${(@)tex_headers}"
     do
       pandoc_opts+=(-H "$i")
+    done
+  fi
+}
+
+add_texvariables() {
+  if (( ${#tex_vars} > 0 ))
+  then
+    for i in "${(@)tex_vars}"
+    do
+      pandoc_opts+=(-V "$i")
     done
   fi
 }
@@ -217,6 +229,11 @@ case "$mode" in
     print -l "Currentry supported formats are: " "html" "slide" "texpdf" >&2
     exit 1
 esac
+
+if [[ -n $DEBUG ]]
+then
+  print -- "${(@)pandoc_opts}"
+fi
 
 pandoc "${(@)pandoc_opts}"
 
